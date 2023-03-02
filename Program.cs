@@ -9,6 +9,21 @@ namespace Quest
     {
         static void Main(string[] args)
         {
+            Robe NewRobe = new();
+            NewRobe.Colors = new List<string>
+            {
+                "Peach Sherbert",
+                "Rainbow Unicorn",
+                "Mud Brown"
+            };
+            NewRobe.Length = 36;
+
+            Console.WriteLine("What is your name, adventurer?");
+            string newName = Console.ReadLine();
+            Adventurer theAdventurer = new Adventurer(newName, NewRobe);
+            Console.WriteLine(theAdventurer.GetDescription());
+
+
             // Create a few challenges for our Adventurer's quest
             // The "Challenge" Constructor takes three arguments
             //   the text of the challenge
@@ -43,9 +58,7 @@ namespace Quest
             int maxAwesomeness = 100;
 
             // Make a new "Adventurer" object using the "Adventurer" class
-            Console.WriteLine("What is your name?");
-            string newName = Console.ReadLine();
-            Adventurer theAdventurer = new Adventurer(newName);
+
 
             // A list of challenges for the Adventurer to complete
             // Note we can use the List class here because have the line "using System.Collections.Generic;" at the top of the file.
@@ -59,24 +72,35 @@ namespace Quest
             };
 
             // Loop through all the challenges and subject the Adventurer to them
-            foreach (Challenge challenge in challenges)
-            {
-                challenge.RunChallenge(theAdventurer);
-            }
+            bool x = true;
 
-            // This code examines how Awesome the Adventurer is after completing the challenges
-            // And praises or humiliates them accordingly
-            if (theAdventurer.Awesomeness >= maxAwesomeness)
+            while(x == true)
             {
-                Console.WriteLine("YOU DID IT! You are truly awesome!");
-            }
-            else if (theAdventurer.Awesomeness <= minAwesomeness)
-            {
-                Console.WriteLine("Get out of my sight. Your lack of awesomeness offends me!");
-            }
-            else
-            {
-                Console.WriteLine("I guess you did...ok? ...sorta. Still, you should get out of my sight.");
+                foreach (Challenge challenge in challenges)
+                {
+                    challenge.RunChallenge(theAdventurer);
+                }
+
+                if (theAdventurer.Awesomeness >= maxAwesomeness)
+                {
+                    Console.WriteLine("YOU DID IT! You are truly awesome!");
+                }
+                else if (theAdventurer.Awesomeness <= minAwesomeness)
+                {
+                    Console.WriteLine("Get out of my sight. Your lack of awesomeness offends me!");
+                }
+                else
+                {
+                    Console.WriteLine("I guess you did...ok? ...sorta. Still, you should get out of my sight.");
+                }
+
+                Console.WriteLine("Do you want to try again? (y/n)");
+                string repeat = Console.ReadLine();
+
+                if (repeat == "n")
+                {
+                    x = false;
+                }
             }
         }
     }
