@@ -11,6 +11,7 @@ namespace Quest
         private string _text;
         private int _correctAnswer;
         private int _awesomenessChange;
+  
 
 
         // A constructor for the Challenge
@@ -37,6 +38,7 @@ namespace Quest
             if (isNumber && numAnswer == _correctAnswer)
             {
                 Console.WriteLine("Well Done!");
+                adventurer.NumberRight += 1;
 
                 // Note how we access an Adventurer object's property
                 adventurer.Awesomeness += _awesomenessChange;

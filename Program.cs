@@ -18,10 +18,18 @@ namespace Quest
             };
             NewRobe.Length = 36;
 
+            Hat NewHat = new();
+            NewHat.ShininessLevel = 10;
+
+            Prize NewPrize = new("WoW");
+
+
             Console.WriteLine("What is your name, adventurer?");
             string newName = Console.ReadLine();
-            Adventurer theAdventurer = new Adventurer(newName, NewRobe);
+            Console.WriteLine();
+            Adventurer theAdventurer = new Adventurer(newName, NewRobe, NewHat);
             Console.WriteLine(theAdventurer.GetDescription());
+            Console.WriteLine();
 
 
             // Create a few challenges for our Adventurer's quest
@@ -31,9 +39,9 @@ namespace Quest
             //   a number of awesome points to gain or lose depending on the success of the challenge
             Challenge twoPlusTwo = new Challenge("2 + 2?", 4, 10);
             Challenge theAnswer = new Challenge(
-                "What's the answer to life, the universe and everything?", 42, 25);
+                "What's the answer to life, the universe and everything?", 420, 25);
             Challenge whatSecond = new Challenge(
-                "What is the current second?", DateTime.Now.Second, 50);
+                "How old am I?", 4, 50);
 
             int randomNumber = new Random().Next() % 10;
             Challenge guessRandom = new Challenge("What number am I thinking of?", randomNumber, 25);
@@ -47,6 +55,16 @@ namespace Quest
 ",
                 4, 20
             );
+            Challenge areYouADingDong = new Challenge("On a scale of 1-10, how much of a ding-dong are you?", 10, 30);
+            Challenge lameMathProblem = new Challenge("How much $$$ are you willing to bribe me?", 420, 420);
+            Challenge dogVsCat = new Challenge(
+                @"Dogs or Cats?
+    1) Dogs
+    2) Cats
+    ",
+                1, 1000
+            );
+
 
             // "Awesomeness" is like our Adventurer's current "score"
             // A higher Awesomeness is better
@@ -68,17 +86,33 @@ namespace Quest
                 theAnswer,
                 whatSecond,
                 guessRandom,
-                favoriteBeatle
+                favoriteBeatle,
+                areYouADingDong,
+                lameMathProblem,
+                dogVsCat
             };
+
+
 
             // Loop through all the challenges and subject the Adventurer to them
             bool x = true;
 
             while(x == true)
             {
-                foreach (Challenge challenge in challenges)
+                List<int> randomChallenges = new();
+
+                while (randomChallenges.Count != 5)
                 {
-                    challenge.RunChallenge(theAdventurer);
+                    Random r = new();
+                    int index = r.Next(0, challenges.Count);
+                    if (!randomChallenges.Contains(index))
+                    {
+                        randomChallenges.Add(index);
+                    }
+                }
+                foreach (int id in randomChallenges)
+                {
+                    challenges[id].RunChallenge(theAdventurer);
                 }
 
                 if (theAdventurer.Awesomeness >= maxAwesomeness)
@@ -94,12 +128,25 @@ namespace Quest
                     Console.WriteLine("I guess you did...ok? ...sorta. Still, you should get out of my sight.");
                 }
 
+                NewPrize.ShowPrize(theAdventurer);
+
+                Console.WriteLine();
                 Console.WriteLine("Do you want to try again? (y/n)");
-                string repeat = Console.ReadLine();
+                string repeat = Console.ReadLine().ToLower();
 
                 if (repeat == "n")
                 {
                     x = false;
+                }
+                else if (repeat == "y")
+                {
+                    theAdventurer.Awesomeness += (theAdventurer.NumberRight * 10);
+                    theAdventurer.NumberRight = 0;
+                    Console.WriteLine($"Awesomeness Score: {theAdventurer.Awesomeness}");
+                    Console.ReadLine();
+                    Console.Clear();
+                    Console.WriteLine("NEXT ROUND DING-DING");
+                    Console.WriteLine();
                 }
             }
         }
